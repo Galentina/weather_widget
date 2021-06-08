@@ -3,17 +3,13 @@ import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { setChosenDays, setFilter, setFilterLabel } from '../../lib/redux/actions/DayAction';
 import { useDays } from '../../hooks/useDays';
-import { getFilter, getFilterLabel } from '../../lib/redux/selector';
+import { getFilterLabel } from '../../lib/redux/selector';
 
 export const SideForm = () => {
-    const { data: days, isFetched } = useDays();
-    // const min = Math.min.apply(null, days?.map((el) => el.temperature));
-    // const max = Math.max.apply(null, days?.map((el) => el.temperature));
-    // console.log('min', min, 'max', max);
+    const { data: days } = useDays();
+    const min = Math.min.apply(null, days?.map((el) => el.temperature));
+    const max = Math.max.apply(null, days?.map((el) => el.temperature));
     const onFilter = useSelector(getFilterLabel);
-    const filterVal = useSelector(getFilter);
-    console.log(onFilter);
-    const [weather, setWeather] = useState('');
     const [minTemp, setMinTemp] = useState('');
     const [maxTemp, setMaxTemp] = useState('');
 
@@ -24,14 +20,32 @@ export const SideForm = () => {
 
     const dispatch = useDispatch();
 
+    const choice = (values) => {
+        // eslint-disable-next-line max-len
+        const chosenDaysWeek = values.dayType ? days?.filter((el) => el.type === values.dayType) : days;
+        const arr = [];
+        const min1 = values.minT !== '' ? Number(values.minT) : min;
+        const max1 = values.maxT !== '' ? Number(values.maxT) : max;
+        for (let i = 0; i < chosenDaysWeek.length; i++) {
+            // eslint-disable-next-line max-len
+            if (chosenDaysWeek[ i ].temperature >= min1 && chosenDaysWeek[ i ].temperature <= max1) arr.push(chosenDaysWeek[ i ]);
+        }
+        dispatch(setChosenDays(arr));
+        // eslint-disable-next-line no-alert
+        if (arr.length === 0 && !onFilter)  alert('There is no result for your choice');
+
+        return arr;
+    };
 
     const valuesFilter = handleSubmit((values) => {
         dispatch(setFilter(values));
-
+        choice(values);
         dispatch(setFilterLabel(!onFilter));
-        console.log('Yes', values);
         if (onFilter) {
-            reset(); setMinTemp(''); setMaxTemp('');
+            reset();
+            dispatch(setChosenDays([]));
+            dispatch(setFilter({ dayType: '', mixT: '', maxT: '' }));
+            setMinTemp(''); setMaxTemp('');
         }
     });
     register('dayType');
@@ -50,9 +64,9 @@ export const SideForm = () => {
                 <input
                     id = 'minT' type = 'number'
                     value = { minTemp }
-                    { ...register('mixT') }
+                    { ...register('minT') }
                     onChange = { (event) => setMinTemp(event.target.value) }
-                    onClick = { () => setValue('mixT', minTemp, { shouldDirty: true }) } />
+                    onClick = { () => setValue('minT', minTemp, { shouldDirty: true }) } />
             </p>
             <p className = 'custom-input'>
                 <label htmlFor = 'maxT'> Maximum temperature</label>
