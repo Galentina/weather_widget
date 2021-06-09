@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
     setChosenDays, setDays, setFilter, setFilterLabel,
 } from '../../lib/redux/actions';
-import { useDays } from '../../hooks/useDays';
+import { useDays } from '../../hooks';
 import { getFilterLabel } from '../../lib/redux/selector';
 
 export const SideForm = () => {

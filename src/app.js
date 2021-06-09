@@ -5,8 +5,8 @@ import CurrentWeek from './components/Week/CurrentWeek';
 
 
 import { SideForm, Weather } from './components';
-import { useDays } from './hooks/useDays';
-import { setDays } from './lib/redux/actions/DayAction';
+import { useDays } from './hooks';
+import { setDays } from './lib/redux/actions';
 
 // Instruments
 export const App = () => {

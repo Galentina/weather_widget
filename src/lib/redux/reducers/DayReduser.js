@@ -14,8 +14,6 @@ export const DayReducer = (state = initialState, action) => {
         };
     }
     case DayTypes.SET_CHOSEN_DAYS: {
-        console.log('chosen', action.payload);
-
         return {
             ...state,
             chosenDays: action.payload,

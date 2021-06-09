@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { format } from  'date-fns';
 import { useDispatch, useSelector } from 'react-redux';
-import { useDays } from '../../hooks/useDays';
+import { useDays } from '../../hooks';
 import { setChosenDays, setDays } from '../../lib/redux/actions';
 import { getChosenDays } from '../../lib/redux/selector';
 
