@@ -2,7 +2,7 @@ import { useQuery } from 'react-query';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { api } from '../api';
-import { setChosenDays, setDays } from '../lib/redux/actions/DayAction';
+import { setChosenDays, setDays } from '../lib/redux/actions';
 import { getFilter, getFilterLabel } from '../lib/redux/selector';
 
 export const useDays = () => {

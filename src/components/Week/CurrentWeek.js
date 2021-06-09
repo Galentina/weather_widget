@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { format } from  'date-fns';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDays } from '../../hooks/useDays';
-import { setChosenDays, setDays } from '../../lib/redux/actions/DayAction';
+import { setChosenDays, setDays } from '../../lib/redux/actions';
 import { getChosenDays } from '../../lib/redux/selector';
 
 
@@ -31,7 +31,15 @@ const CurrentWeek = () => {
             return (
                 <div
                     key = { el.id } className = { typeOfDay }
-                    onClick = { () => handleDayClick(el.id) }> { format(el.day, 'EEEE') }
+                    onClick = { () => handleDayClick(el.id) }>
+                    <p>
+                        { format(el.day, 'EEEE') }
+                    </p>
+                    <p>
+                        <span>
+                            { el.temperature }
+                        </span>
+                    </p>
                 </div>
             );
         });
@@ -43,7 +51,16 @@ const CurrentWeek = () => {
         return (
             <div
                 key = { el.id } className = { typeOfDay }
-                onClick = { () => handleDayClick(el.id) }> { format(el.day, 'EEEE') }
+                onClick = { () => handleDayClick(el.id) }>
+                <p>
+                    { format(el.day, 'EEEE') }
+                </p>
+                <p>
+                    <span>
+                        { el.temperature }
+                    </span>
+                </p>
+
             </div>
         );
     });

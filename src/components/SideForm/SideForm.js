@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { setChosenDays, setFilter, setFilterLabel } from '../../lib/redux/actions/DayAction';
+import {
+    setChosenDays, setDays, setFilter, setFilterLabel,
+} from '../../lib/redux/actions';
 import { useDays } from '../../hooks/useDays';
 import { getFilterLabel } from '../../lib/redux/selector';
 
@@ -31,6 +33,7 @@ export const SideForm = () => {
             if (chosenDaysWeek[ i ].temperature >= min1 && chosenDaysWeek[ i ].temperature <= max1) arr.push(chosenDaysWeek[ i ]);
         }
         dispatch(setChosenDays(arr));
+        dispatch(setDays(arr[ 0 ].id));
         // eslint-disable-next-line no-alert
         if (arr.length === 0 && !onFilter)  alert('There is no result for your choice');
 
@@ -44,6 +47,7 @@ export const SideForm = () => {
         if (onFilter) {
             reset();
             dispatch(setChosenDays([]));
+            dispatch(setDays(days[ 0 ].id));
             dispatch(setFilter({ dayType: '', mixT: '', maxT: '' }));
             setMinTemp(''); setMaxTemp('');
         }
