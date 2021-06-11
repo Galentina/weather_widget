@@ -18,7 +18,7 @@ export const SideForm = ({ data }) => {
     const dispatch = useDispatch();
 
     const valuesFilter = handleSubmit((values) => {
-        const values1 = values;
+        const values1 = { dayType: values.dayType, minT: minTemp, maxT: maxTemp };
         if (!values1.dayType) values1.dayType = '';
         console.log('value', values1);
         dispatch(setFilter(values1));
