@@ -1,56 +1,26 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { format } from  'date-fns';
 import { useDispatch, useSelector } from 'react-redux';
-import { useDays } from '../../hooks';
-import { setChosenDays, setDays } from '../../lib/redux/actions';
-import { getChosenDays } from '../../lib/redux/selector';
+import { setDays, setFilter } from '../../lib/redux/actions';
+import { getDay } from '../../lib/redux/selector';
 
 
-const CurrentWeek = () => {
-    const { data: days, isFetched } = useDays();
+const CurrentWeek = ({ data }) => {
     const dispatch = useDispatch();
-    const chosenDays = useSelector(getChosenDays);
-
-
-    useEffect(() => {
-        if (Array.isArray(days)) {
-            dispatch(setChosenDays(days));
-            dispatch(setDays(days[ 0 ].id));
-        }
-    },  []);
+    const selectedDayId = useSelector(getDay);
 
     const handleDayClick = (id) => {
         dispatch(setDays(id));
     };
-    let newDaysOfWeek = [];
-    if (chosenDays.length !== 0) {
-        newDaysOfWeek = chosenDays.slice(0, 7).map((el) => {
-            // eslint-disable-next-line no-nested-ternary
-            const typeOfDay = el.type === 'sunny' ? 'day sunny' : el.type === 'rainy' ? 'day rainy' : 'day cloudy';
 
-            return (
-                <div
-                    key = { el.id } className = { typeOfDay }
-                    onClick = { () => handleDayClick(el.id) }>
-                    <p>
-                        { format(el.day, 'EEEE') }
-                    </p>
-                    <p>
-                        <span>
-                            { el.temperature }
-                        </span>
-                    </p>
-                </div>
-            );
-        });
-    }
-    const daysOfWeek = isFetched && days?.slice(0, 7).map((el) => {
-        // eslint-disable-next-line no-nested-ternary
-        const typeOfDay = el.type === 'sunny' ? 'day sunny' : el.type === 'rainy' ? 'day rainy' : 'day cloudy';
+    if (!data?.length) dispatch(setFilter({ dayType: '', minT: '', maxT: '' }));
+
+    const daysOfWeek = data.slice(0, 7).map((el) => {
+        const typeSelectedDay = selectedDayId || data[ 0 ].id;
 
         return (
             <div
-                key = { el.id } className = { typeOfDay }
+                key = { el.id } className = { el.id === typeSelectedDay ? `day ${el.type} selected` : `day ${el.type}` }
                 onClick = { () => handleDayClick(el.id) }>
                 <p>
                     { format(el.day, 'EEEE') }
@@ -68,9 +38,8 @@ const CurrentWeek = () => {
 
     return (
         <div className = 'forecast'>
-            { chosenDays.length !== 0
-                ? newDaysOfWeek
-                : daysOfWeek
+            {
+                daysOfWeek
             }
         </div>
     );

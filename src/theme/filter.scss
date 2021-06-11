@@ -43,6 +43,7 @@
 
 .filter .checkbox.blocked {
     cursor: initial;
+    pointer-events: none;
 }
 
 .filter .custom-input {
@@ -110,7 +111,7 @@
 }
 
 @media screen and (max-width: 768px) {
-    .filter-btn { 
+    .filter-btn {
         margin: 20px 0 0 auto;
         background: transparent;
         border: unset;
@@ -127,7 +128,7 @@
             background-size: contain;
             border: unset;
         }
-        
+
         &.active::before{
             content: '';
             display: block;
@@ -138,12 +139,12 @@
             border: unset;
         }
 
-        &.active + .filter { 
+        &.active + .filter {
             display: flex;
         }
     }
 
-    .filter { 
+    .filter {
         background: rgb(165,106,165);
         background-size: cover;
         width: calc(100% - 20px);

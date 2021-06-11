@@ -1,30 +1,41 @@
 // Components
-import { useDispatch } from 'react-redux';
-import { useEffect } from 'react';
 import CurrentWeek from './components/Week/CurrentWeek';
 
 
 import { SideForm, Weather } from './components';
 import { useDays } from './hooks';
-import { setDays } from './lib/redux/actions';
 
 // Instruments
 export const App = () => {
-    const { data: days } = useDays();
+    const { res, isFetched } = useDays();
+    const yesDays = () => {
+        return (
+            <>
+                <Weather data = { res } />
+                <CurrentWeek data = { res } />
+            </>
+        );
+    };
 
-    const dispatch = useDispatch();
-    useEffect(() => {
-        if (Array.isArray(days)) {
-            dispatch(setDays(days?.[ 0 ].id));
-        }
-    },  []);
-
+    const noDays = () => {
+        return (
+            <div className = 'forecast'>
+                <p className = 'message'>Search criteria are no available days!</p>
+            </div>
+        );
+    };
 
     return (
         <main>
-            <SideForm />
-            <Weather />
-            <CurrentWeek />
+            { isFetched
+            && <>
+                <SideForm data = { res } />
+                { !res.length
+                    ? noDays()
+                    : yesDays()
+                }
+            </>
+            }
         </main>
     );
 };

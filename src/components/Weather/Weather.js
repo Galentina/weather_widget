@@ -1,18 +1,18 @@
 import React from 'react';
 import { format } from 'date-fns';
-import { useSelector } from 'react-redux';
-import { useDays } from '../../hooks/useDays';
+import { useDispatch, useSelector } from 'react-redux';
 import { getDay } from '../../lib/redux/selector';
+import { setFilter } from '../../lib/redux/actions';
 
 
-export const Weather = () => {
-    const { data: days, isFetched } = useDays();
+export const Weather = ({ data }) => {
+    const dispatch = useDispatch();
     const selectedDayId = useSelector(getDay);
+    if (!data?.length) dispatch(setFilter({ dayType: '', minT: '', maxT: '' }));
+    const chosenDay =  !selectedDayId  ? data.find((el, i) => i === 0)
+        : data.find((el) => el.id === selectedDayId);
 
-    const chosenDay =  !selectedDayId  ? days?.find((el, i) => i === 0)
-        : days?.find((el) => el.id === selectedDayId);
-
-    if (!isFetched && !selectedDayId) {
+    if (!chosenDay) {
         return 'Загрузка...';
     }
 

@@ -1,8 +1,7 @@
 import { DayTypes } from '../types';
 
 const initialState = {
-    days:       '',
-    chosenDays: [],
+    days: '',
 };
 
 export const DayReducer = (state = initialState, action) => {
@@ -11,12 +10,6 @@ export const DayReducer = (state = initialState, action) => {
         return {
             ...state,
             days: action.payload,
-        };
-    }
-    case DayTypes.SET_CHOSEN_DAYS: {
-        return {
-            ...state,
-            chosenDays: action.payload,
         };
     }
     default: return state;
