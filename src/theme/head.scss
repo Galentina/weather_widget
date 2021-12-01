@@ -1,10 +1,25 @@
+.city {
+    display: flex;
+    justify-content: center;
+    margin-top: 60px;
+    margin-bottom: 50px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 100;
+    font-size: calc(50px + 0.5vw);
+    color: $color1;
+    text-transform: uppercase;
+    text-align: center;
+    text-shadow: 1px 1px 1px #6584c7;
+}
 
 .head {
     display: flex;
     justify-content: center;
-    margin-top: 60px;
-    margin-bottom: 83px;
+    margin-top: 50px;
+    margin-bottom: 20px;
 }
+
+
 
 .head .cloudy {
     width: 114px;
@@ -31,6 +46,7 @@
 .head .current-date {
     display: flex;
     flex-direction: column;
+    text-shadow: 1px 1px 1px #6584c7;
 }
 
 .head .current-date p {
@@ -54,7 +70,7 @@
 @media screen and (max-width: 1200px) {
     .head {
         align-items: center;
-        margin-bottom: 50px;
+        margin-bottom: 30px;
     }
     .head .cloudy {
         width: 114px - 20px;
@@ -87,7 +103,7 @@
 @media screen and (max-width: 768px) {
     .head {
          align-items: center;
-         margin-bottom: 50px;
+         margin-bottom: 30px;
     }
     .head .cloudy {
         width: 114px - 30px;

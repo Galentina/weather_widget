@@ -1,14 +1,12 @@
 import { FilterTypes } from '../types';
 
-const initialState1 = {
+const initialState = {
     filterValues: {
-        dayType: '',
-        minT:    '',
-        maxT:    '',
+        city: 'London',
     },
 };
 
-export const FilterReducer = (state = initialState1, action) => {
+export const FilterReducer = (state = initialState, action) => {
     switch (action.type) {
     case FilterTypes.SET_FILTER: {
         return {

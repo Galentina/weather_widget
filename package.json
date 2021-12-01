@@ -1,12 +1,13 @@
 {
     "name": "weather",
     "version": "1.0.0",
+    "homepage": "./",
     "private": true,
     "author": {
-        "email": "admin@lectrum.io",
-        "name": "Lectrum Team"
+        "email": "gala.malareva@gmail.com",
+        "name": "Galina Malareva"
     },
-    "license": "MIT",
+    "license": "",
     "scripts": {
         "dev": "react-scripts start",
         "build": "react-scripts build",

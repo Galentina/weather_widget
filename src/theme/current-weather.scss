@@ -1,13 +1,23 @@
+@mixin icons {
+    content: '';
+    display: inline-block;
+    height: 28px;
+    margin: 0 11px;
+    background-repeat: no-repeat;
+    background-position: bottom;
+}
+
 
 .current-weather {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-bottom: 40px;
+    text-shadow: 1px 1px 1px #6584c7;
     .temperature {
         position: relative;
         font-family: 'Roboto', sans-serif;
-        font-weight: 200;
+        font-weight: 100;
         font-size: 350px;
         line-height: 1;
         color: $color1;
@@ -26,49 +36,69 @@
         }
     }
 
+    .meta-section{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        & p {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+    }
     .meta span {
         font-family: 'Roboto', sans-serif;
         font-weight: 200;
         font-size: 32px;
         color: $color1;
-        display: inline-flex;
-        align-items: center;
-
-        &:first-child {
-            margin-right: 81px;
-        }
+        margin-bottom: 10px;
+        width: 200px;
+        text-align: center;
     }
 
     .rainy::before {
-        content: '';
-        display: inline-block;
-        width: 26px;
-        height: 26px;
-        background-image: url('./assets/rainy.png');
-        margin-right: 11px;
+        width: 30px;
+        @include icons;
+        background-image: url('./assets/windy.svg');
+        background-size: 100%;
     }
 
     .humidity::before {
-        content: '';
-        display: inline-block;
-        width: 19px;
-        height: 28px;
+        width: 26px;
+        @include icons;
         background-image: url('./assets/humidity.png');
-        margin-right: 11px;
+    }
+    .sunset::before {
+        width: 30px;
+        @include icons;
+        background-image: url('./assets/sunset.svg');
+        background-size: 100%;
+        background-position: center;
+    }
+    .sunrise::before {
+        width: 30px;
+        @include icons;
+        background-image: url('./assets/sunrise.svg');
+        background-size: 100%;
     }
 }
 
 @media screen and (max-width: 1200px) {
     .current-weather {
         margin-bottom: 50px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
 
         .temperature {
             font-size: 212px;
             margin-bottom: 40px;
-    
+
             &::after {
                 top: 20px;
-                right: -10px;
+                right: -20px;
                 width: 20px;
                 height: 20px;
                 border: solid 3px $color1;
@@ -89,7 +119,7 @@
         .temperature {
             font-size: 102px;
             margin-bottom: 40px;
-    
+
             &::after {
                 top: 10px;
                 right: -10px;

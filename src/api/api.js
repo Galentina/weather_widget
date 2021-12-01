@@ -1,12 +1,10 @@
-// Core
 import axios from 'axios';
 
-const WEATHER_API_URL = process.env.REACT_APP_WEATHER_API_URL;
 
 export const api = Object.freeze({
-    async getWeather() {
-        const { data } =  await axios.get(`${WEATHER_API_URL}/forecast`);
+    async getWeather(city) {
+        const data =  await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=da93608cf96aa48f624ad7a4a9442ed2`);
 
-        return data.data;
+        return data;
     },
 });

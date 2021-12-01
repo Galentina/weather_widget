@@ -1,39 +1,46 @@
-import { useQuery } from 'react-query';
-import { useEffect } from 'react';
+import { useQuery, useQueryClient } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
 import { api } from '../api';
-import { setDays } from '../lib/redux/actions';
-import { getFilter } from '../lib/redux/selector';
+import { getCity } from '../lib/redux/selector';
+import { setFilter } from '../lib/redux/actions';
 
 export const useDays = () => {
-    const query = useQuery('data', api.getWeather);
-    const filterVal = useSelector(getFilter);
     const dispatch = useDispatch();
+    const state = useSelector(getCity);
+    const client = useQueryClient();
+    const query = useQuery(['data', state.city],
+        async () => {
+            const data = await api.getWeather(state.city);
 
-    useEffect(() => {
-        if (Array.isArray(query?.data)) {
-            dispatch(setDays(query?.data[ 0 ].id));
-        }
-    },  []);
+            return data;
+        },
+        {
+            placeholderData() {
+                const dataPreview = client
+                    .getQueryData('data')
+                    ?.find((data) => data.state.city === state.city);
 
-    let res = query?.data;
+                return (
+                    dataPreview ?? {
+                        title: 'getting data',
+                        body:  '...weather is coming',
+                    }
+                );
+            },
+            onError() {
+                dispatch(setFilter({ city: 'London' }));
+                // eslint-disable-next-line no-alert
+                alert('The name of the city is wrong! Please write the real name of the city');
+            },
+            retry:      2,
+            retryDelay: 1500,
+        });
+    const { isLoading, isFetched } = query;
 
-    const { isFetched } = query;
-    console.log(res?.length, query.data);
+    const res = query?.data.data;
 
-    if (filterVal.dayType) {
-        res = res.filter((el) => el.type === filterVal.dayType);
-    }
-    if (filterVal.minT !== '' && res?.length) {
-        res = res.filter((el) => el.temperature >= Number(filterVal.minT));
-    }
-    if (filterVal.maxT !== '' && res?.length) {
-        res = res.filter((el) => el.temperature <= Number(filterVal.maxT));
-    }
-    if (res?.length) dispatch(setDays(res?.[ 0 ].id));
-    else dispatch(setDays(''));
 
-    return { res, isFetched };
-    // noDays
+    return { res, isLoading, isFetched };
 };
 

@@ -1,7 +1,5 @@
-// Core
 import { createStore, applyMiddleware } from 'redux';
 
-// Instruments
 import { rootReducer } from './rootReducer';
 import {
     composeEnhancers,

@@ -1,2 +1,1 @@
-export * from './getDay';
-export * from './getFilter';
+export * from './getCity';

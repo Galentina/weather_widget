@@ -1,48 +1,71 @@
 import React from 'react';
 import { format } from 'date-fns';
-import { useDispatch, useSelector } from 'react-redux';
-import { getDay } from '../../lib/redux/selector';
-import { setFilter } from '../../lib/redux/actions';
+
+export const Weather = (props) => {
+    const day = Date.now();
 
 
-export const Weather = ({ data }) => {
-    const dispatch = useDispatch();
-    const selectedDayId = useSelector(getDay);
-    if (!data?.length) dispatch(setFilter({ dayType: '', minT: '', maxT: '' }));
-    const chosenDay =  !selectedDayId  ? data.find((el, i) => i === 0)
-        : data.find((el) => el.id === selectedDayId);
+    const {
+        main, wind, weather, sys,
+    } = props;
 
-    if (!chosenDay) {
-        return 'Загрузка...';
+    const sun = { ...sys };
+    const temp = { ...main };
+    const air = { ...weather };
+    const winds = { ...wind };
+    const icon = air[ 0 ]?.icon;
+
+    // eslint-disable-next-line no-nested-ternary
+    const iconShow = icon === '02d' || icon === '03d' || icon === '04d' || icon === '13d' || icon === '50d' ? 'cloudy'
+        : icon === '09d' || icon === '10d' || icon === '11d' ? 'rainy' : 'sunny';
+
+    const tempData = Math.floor(temp.temp - 273.15);
+
+    if (!tempData) {
+        return (
+            <div className = 'forecast'>
+                <p className = 'message'>Weather is coming!</p>
+            </div>
+        );
     }
 
 
     return (
         <div>
             <div className = 'head'>
-                <div className = { `icon ${chosenDay.type}` } />
+                <img src = { `http://openweathermap.org/img/wn/${icon}@2x.png` } />
                 <div className = 'current-date'>
                     <p>
-                        { format(chosenDay.day, 'EEEE') }
+                        { format(day, 'EEEE') }
                     </p>
                     <span>
-                        { format(chosenDay.day, 'dd') } { format(chosenDay.day, 'LLLL') }
+                        { format(day, 'dd') } { format(day, 'LLLL') }
                     </span>
                 </div>
 
             </div>
             <div className = 'current-weather'>
                 <p className = 'temperature'>
-                    { chosenDay.temperature }
+                    { tempData }
                 </p>
-                <p className = 'meta'>
-                    <span className = 'rainy'>
-                        { chosenDay.rain_probability }
-                    </span>
-                    <span className = 'humidity'>
-                        { chosenDay.humidity }
-                    </span>
-                </p>
+                <section className = 'meta-section'>
+                    <p className = 'meta' >
+                        <span className = 'rainy'>
+                            { winds.speed } m/s
+                        </span>
+                        <span className = 'humidity' >
+                            { temp.humidity } %
+                        </span>
+                    </p>
+                    <p className = 'meta'>
+                        <span className = 'sunrise'>
+                            { format(sun.sunset, 'HH:mm') }
+                        </span>
+                        <span className = 'sunset'>
+                            { format(sun.sunrise, 'HH:mm') }
+                        </span>
+                    </p>
+                </section>
             </div>
         </div>
     );
